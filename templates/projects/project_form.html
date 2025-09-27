@@ -1,0 +1,662 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Create Project - KBTuneco{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    }
+
+    .form-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .page-header {
+        background: var(--primary-gradient);
+        color: white;
+        border-radius: 20px;
+        padding: 30px;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+    
+    .form-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        margin-bottom: 30px;
+    }
+    
+    .form-section {
+        margin-bottom: 30px;
+        padding-bottom: 30px;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .form-section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+    
+    .section-title {
+        color: #2c3e50;
+        font-weight: 600;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .section-title i {
+        color: #667eea;
+        font-size: 1.2rem;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-label {
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .form-label i {
+        color: #667eea;
+    }
+    
+    .form-control, .form-select {
+        width: 100%;
+        display: block;
+        border-radius: 15px;
+        border: 2px solid #e9ecef;
+        padding: 12px 16px;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102,126,234,.25);
+    }
+    
+    textarea.form-control {
+        min-height: 200px;
+        resize: vertical;
+    }
+    
+    .form-text {
+        color: #6c757d;
+        font-size: 0.875rem;
+        margin-top: 5px;
+    }
+    
+    .btn-group-custom {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 30px;
+    }
+    
+    .btn-save {
+        background: var(--primary-gradient);
+        /* Solid fallback to ensure contrast if CSS var not applied */
+        background-color: #2563eb;
+        border: 1px solid #1d4ed8;
+        color: #ffffff;
+        padding: 14px 36px;
+        border-radius: 9999px; /* pill shape */
+        font-weight: 700;
+        font-size: 1.05rem;
+        transition: all 0.2s ease;
+        min-width: 160px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-decoration: none;
+    }
+    
+    .btn-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(37, 99, 235, 0.35);
+        filter: brightness(0.98);
+        color: #ffffff;
+    }
+    
+    .btn-cancel {
+        background: #6c757d;
+        border: none;
+        color: white;
+        padding: 15px 40px;
+        border-radius: 25px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        min-width: 150px;
+        text-align: center;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .btn-cancel:hover {
+        background: #5a6268;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        color: white;
+        text-decoration: none;
+    }
+    
+    .required-field::after {
+        content: ' *';
+        color: #dc3545;
+    }
+    
+    .keywords-help {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 10px;
+        border-left: 4px solid #667eea;
+    }
+    
+    .keywords-help h6 {
+        color: #667eea;
+        margin-bottom: 10px;
+    }
+    
+    .keyword-examples {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+    }
+    
+    .keyword-example {
+        background: #e9ecef;
+        color: #495057;
+        padding: 4px 10px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+    }
+    
+    .alert {
+        border-radius: 15px;
+        border: none;
+        margin-bottom: 20px;
+    }
+    
+    .alert-danger {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+        color: white;
+    }
+
+    /* Keywords checkboxes styling */
+    .checkbox-group {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 10px;
+        margin-top: 10px;
+        padding: 0;
+        list-style: none;
+        pointer-events: auto;
+    }
+
+    .checkbox-group li {
+        margin: 0;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        background: #f8fafc;
+        transition: all 0.2s ease;
+        min-height: 40px;
+    }
+
+    .checkbox-group li:hover {
+        background: #eef2ff;
+        border-color: #667eea;
+    }
+
+    .checkbox-group li label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        height: 100%;
+        padding: 8px 12px;
+        margin: 0;
+        cursor: pointer;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+        margin: 0 8px 0 0;
+        accent-color: #2563eb;
+    }
+
+    .selected-keywords-list {
+        margin-top: 15px;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border: 1px solid #e9ecef;
+    }
+
+    .selected-keywords-list h6 {
+        color: #667eea;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+    }
+
+    .selected-keywords-list .selected-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .selected-keyword {
+        background: #667eea;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .selected-keyword .remove-btn {
+        cursor: pointer;
+        font-weight: bold;
+        margin-left: 4px;
+    }
+    
+    @media (max-width: 768px) {
+        .form-card {
+            padding: 20px;
+        }
+        
+        .btn-group-custom {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .btn-save, .btn-cancel {
+            width: 100%;
+            max-width: 300px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1 class="display-6 mb-2">
+            <i class="bi bi-plus-circle"></i> Create New Project
+        </h1>
+        <p class="lead mb-0">Share your project and find collaborators</p>
+    </div>
+
+    <div class="form-card">
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                <i class="bi bi-exclamation-triangle"></i>
+                <strong>Please correct the following errors:</strong>
+                <ul class="mb-0 mt-2">
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <li>{{ field|title }}: {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+            
+            <!-- Basic Information Section -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    <i class="bi bi-info-circle"></i>
+                    Basic Information
+                </h3>
+                
+                <div class="form-group">
+                    <label for="id_title" class="form-label required-field">
+                        <i class="bi bi-card-text"></i> Project Title
+                    </label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="id_title" 
+                        name="title" 
+                        value="{{ form.title.value|default:'' }}"
+                        placeholder="Enter a descriptive title for your project"
+                        required
+                    >
+                    <div class="form-text">Choose a clear, concise title that describes your project</div>
+                    {% if form.title.errors %}
+                        <div class="text-danger small mt-1">{{ form.title.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_description" class="form-label required-field">
+                        <i class="bi bi-file-text"></i> Description
+                    </label>
+                    <textarea 
+                        class="form-control" 
+                        id="id_description" 
+                        name="description" 
+                        placeholder="Provide a detailed description of your project, including objectives, scope, and expected outcomes..."
+                        rows="8"
+                        required
+                    >{{ form.description.value|default:'' }}</textarea>
+                    <div class="form-text">Describe your project in detail to attract the right collaborators</div>
+                    {% if form.description.errors %}
+                        <div class="text-danger small mt-1">{{ form.description.errors.0 }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Project Details Section -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    <i class="bi bi-gear"></i>
+                    Project Details
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <div class="form-group">
+                            <label for="id_project_type" class="form-label required-field">
+                                <i class="bi bi-tag"></i> Project Type
+                            </label>
+                            <select class="form-select" id="id_project_type" name="project_type" required>
+                                <option value="">Select project type...</option>
+                                <option value="mission" {% if form.project_type.value == 'mission' %}selected{% endif %}>Mission Courte</option>
+                                <option value="research" {% if form.project_type.value == 'research' %}selected{% endif %}>Recherche</option>
+                                <option value="engineering" {% if form.project_type.value == 'engineering' %}selected{% endif %}>Ingénierie</option>
+                                <option value="pfe" {% if form.project_type.value == 'pfe' %}selected{% endif %}>PFE / Master / PhD</option>
+                            </select>
+                            {% if form.project_type.errors %}
+                                <div class="text-danger small mt-1">{{ form.project_type.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="form-group">
+                            <label for="id_specialization_needed" class="form-label required-field">
+                                <i class="bi bi-mortarboard"></i> Specialization Needed
+                            </label>
+                            <select class="form-select" id="id_specialization_needed" name="specialization_needed" required>
+                                <option value="">Select specialization...</option>
+                                <option value="aero" {% if form.specialization_needed.value == 'aero' %}selected{% endif %}>Aeronautical Engineering</option>
+                                <option value="agri" {% if form.specialization_needed.value == 'agri' %}selected{% endif %}>Agriculture</option>
+                                <option value="ai" {% if form.specialization_needed.value == 'ai' %}selected{% endif %}>Artificial Intelligence</option>
+                                <option value="bio" {% if form.specialization_needed.value == 'bio' %}selected{% endif %}>Biotechnology</option>
+                                <option value="chem" {% if form.specialization_needed.value == 'chem' %}selected{% endif %}>Chemistry / Chemical Engineering</option>
+                                <option value="civ" {% if form.specialization_needed.value == 'civ' %}selected{% endif %}>Civil Engineering</option>
+                                <option value="cs" {% if form.specialization_needed.value == 'cs' %}selected{% endif %}>Computer Science / ICT</option>
+                                <option value="elec" {% if form.specialization_needed.value == 'elec' %}selected{% endif %}>Electrical & Power Engineering</option>
+                                <option value="env" {% if form.specialization_needed.value == 'env' %}selected{% endif %}>Environment</option>
+                                <option value="mech" {% if form.specialization_needed.value == 'mech' %}selected{% endif %}>Mechanical Engineering</option>
+                                <option value="med" {% if form.specialization_needed.value == 'med' %}selected{% endif %}>Medicine / Biomedical</option>
+                                <option value="mgmt" {% if form.specialization_needed.value == 'mgmt' %}selected{% endif %}>Management Science</option>
+                                <option value="math" {% if form.specialization_needed.value == 'math' %}selected{% endif %}>Mathematics</option>
+                                <option value="phys" {% if form.specialization_needed.value == 'phys' %}selected{% endif %}>Physics</option>
+                                <option value="soc" {% if form.specialization_needed.value == 'soc' %}selected{% endif %}>Social Sciences / Humanities</option>
+                                <option value="other" {% if form.specialization_needed.value == 'other' %}selected{% endif %}>Other</option>
+                            </select>
+                            {% if form.specialization_needed.errors %}
+                                <div class="text-danger small mt-1">{{ form.specialization_needed.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <div class="form-group">
+                            <label for="id_duration" class="form-label">
+                                <i class="bi bi-clock"></i> Duration
+                            </label>
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                id="id_duration" 
+                                name="duration" 
+                                value="{{ form.duration.value|default:'' }}"
+                                placeholder="e.g., 3 months, 6 weeks, 1 year"
+                            >
+                            <div class="form-text">Estimated project duration</div>
+                            {% if form.duration.errors %}
+                                <div class="text-danger small mt-1">{{ form.duration.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="form-group">
+                            <label for="id_budget" class="form-label">
+                                <i class="bi bi-currency-dollar"></i> Budget
+                            </label>
+                            <input 
+                                type="number" 
+                                class="form-control" 
+                                id="id_budget" 
+                                name="budget" 
+                                value="{{ form.budget.value|default:'' }}"
+                                placeholder="0.00"
+                                step="0.01"
+                                min="0"
+                            >
+                            <div class="form-text">Project budget (optional)</div>
+                            {% if form.budget.errors %}
+                                <div class="text-danger small mt-1">{{ form.budget.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Information Section -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    <i class="bi bi-plus-square"></i>
+                    Additional Information
+                </h3>
+                
+                <div class="form-group">
+                    <label for="id_prerequisites" class="form-label">
+                        <i class="bi bi-list-check"></i> Prerequisites
+                    </label>
+                    <textarea 
+                        class="form-control" 
+                        id="id_prerequisites" 
+                        name="prerequisites" 
+                        placeholder="List any specific skills, qualifications, or requirements for collaborators..."
+                        rows="6"
+                    >{{ form.prerequisites.value|default:'' }}</textarea>
+                    <div class="form-text">Specify any requirements or qualifications needed</div>
+                    {% if form.prerequisites.errors %}
+                        <div class="text-danger small mt-1">{{ form.prerequisites.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="bi bi-tags"></i> Keywords
+                    </label>
+                    {{ form.keywords }}
+                    <div class="form-text">Select multiple keywords that describe your project</div>
+                    {% if form.keywords.errors %}
+                        <div class="text-danger small mt-1">{{ form.keywords.errors.0 }}</div>
+                    {% endif %}
+
+                    <div class="keywords-help">
+                        <h6><i class="bi bi-lightbulb"></i> Tip: Choose relevant keywords</h6>
+                        <p class="mb-2 small">Keywords help others find your project. Select terms that best describe your project's domain and technologies.</p>
+                        <div class="keyword-examples">
+                            <span class="keyword-example">Machine Learning</span>
+                            <span class="keyword-example">IoT</span>
+                            <span class="keyword-example">Sustainability</span>
+                            <span class="keyword-example">Data Analysis</span>
+                            <span class="keyword-example">Mobile App</span>
+                        </div>
+                    </div>
+
+                    <div class="selected-keywords-list">
+                        <h6>Selected Keywords:</h6>
+                        <div class="selected-list" id="selected-list"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="btn-group-custom">
+                <button type="submit" class="btn-save">
+                    <i class="bi bi-check-circle"></i> Create Project
+                </button>
+                <a href="{% url 'project_list' %}" class="btn-cancel">
+                    <i class="bi bi-x-circle"></i> Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add animation to form card
+        const formCard = document.querySelector('.form-card');
+        formCard.style.opacity = '0';
+        formCard.style.transform = 'translateY(30px)';
+        
+        setTimeout(() => {
+            formCard.style.transition = 'all 0.6s ease';
+            formCard.style.opacity = '1';
+            formCard.style.transform = 'translateY(0)';
+        }, 100);
+        
+        // Add focus effects to form inputs
+        const inputs = document.querySelectorAll('.form-control, .form-select');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 5px 15px rgba(102,126,234,0.2)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '';
+            });
+        });
+        
+        // Add loading state to save button
+        const form = document.querySelector('form');
+        const saveBtn = document.querySelector('.btn-save');
+        
+        form.addEventListener('submit', function() {
+            saveBtn.innerHTML = '<span class="loading"></span> Creating Project...';
+            saveBtn.disabled = true;
+        });
+        
+        // Character counter for description
+        const descriptionField = document.getElementById('id_description');
+        if (descriptionField) {
+            const counter = document.createElement('div');
+            counter.className = 'form-text text-end';
+            counter.style.marginTop = '5px';
+            descriptionField.parentNode.appendChild(counter);
+
+            function updateCounter() {
+                const length = descriptionField.value.length;
+                counter.textContent = `${length} characters`;
+                if (length > 500) {
+                    counter.style.color = '#28a745';
+                } else if (length > 200) {
+                    counter.style.color = '#ffc107';
+                } else {
+                    counter.style.color = '#6c757d';
+                }
+            }
+
+            descriptionField.addEventListener('input', updateCounter);
+            updateCounter();
+        }
+
+        // Manage selected keywords list without persisting between sessions
+        const keywordCheckboxes = document.querySelectorAll('input[name="keywords"]');
+        const selectedList = document.getElementById('selected-list');
+        const checkboxListEl = document.querySelector('.checkbox-group');
+        // Make the entire item clickable (not just the tiny checkbox)
+        if (checkboxListEl) {
+            checkboxListEl.addEventListener('click', function(e) {
+                const li = e.target.closest('li');
+                if (!li) return;
+                const input = li.querySelector('input[type="checkbox"]');
+                if (input && e.target.tagName !== 'INPUT') {
+                    input.checked = !input.checked;
+                    input.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            });
+        }
+
+        function updateSelectedList() {
+            const selected = Array.from(keywordCheckboxes)
+                .filter(cb => cb.checked)
+                .map(cb => {
+                    const labelEl = cb.closest('label') || cb.parentElement;
+                    const label = labelEl ? labelEl.textContent.trim() : '';
+                    return { value: cb.value, label };
+                });
+
+            selectedList.innerHTML = '';
+            selected.forEach(item => {
+                const keywordEl = document.createElement('span');
+                keywordEl.className = 'selected-keyword';
+                keywordEl.innerHTML = `${item.label} <span class="remove-btn" data-value="${item.value}">×</span>`;
+                selectedList.appendChild(keywordEl);
+            });
+
+            // Add remove event listeners
+            selectedList.querySelectorAll('.remove-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const value = this.getAttribute('data-value');
+                    const checkbox = document.querySelector(`input[name="keywords"][value="${value}"]`);
+                    if (checkbox) {
+                        checkbox.checked = false;
+                        updateSelectedList();
+                    }
+                });
+            });
+        }
+
+        // Initialize selected list from current state (do not override existing selections)
+        updateSelectedList();
+
+        // Update selected list on change
+        keywordCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                updateSelectedList();
+            });
+        });
+    });
+</script>
+{% endblock %}

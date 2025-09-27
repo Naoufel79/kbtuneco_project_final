@@ -1,0 +1,218 @@
+
+
+{% extends 'base.html' %}
+
+{% block title %}Suggested Projects - KBTuneco{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="display-5 mb-2">
+                    <i class="bi bi-lightbulb"></i> Suggested Projects
+                </h1>
+                <p class="lead mb-0">Projects tailored to your interests and specialization</p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <div class="d-flex justify-content-md-end gap-2">
+                    <span class="badge bg-light text-dark fs-6">
+                        <i class="bi bi-collection"></i> {{ suggestions|length }} Suggestions
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Projects List -->
+    <div class="row">
+        <div class="col-12">
+            {% if suggestions %}
+                {% for project in suggestions %}
+                <div class="project-card">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <h4>
+                                <a href="{% url 'project_detail' project.id %}" class="project-title">
+                                    {{ project.title }}
+                                </a>
+                            </h4>
+
+                            <div class="project-meta">
+                                <span class="meta-badge bg-primary text-white">
+                                    <i class="bi bi-tag"></i> {{ project.get_project_type_display }}
+                                </span>
+                                <span class="meta-badge bg-secondary text-white">
+                                    <i class="bi bi-mortarboard"></i> {{ project.get_specialization_needed_display }}
+                                </span>
+                                <span class="meta-badge bg-success text-white">
+                                    <i class="bi bi-circle-fill"></i> {{ project.get_status_display }}
+                                </span>
+                                {% if project.duration %}
+                                <span class="meta-badge bg-info text-white">
+                                    <i class="bi bi-clock"></i> {{ project.duration }}
+                                </span>
+                                {% endif %}
+                            </div>
+
+                            <p class="text-muted mb-3">{{ project.description|truncatewords:25 }}</p>
+
+                            {% if project.keywords.all %}
+                            <div class="keywords-section">
+                                <small class="text-muted fw-bold">
+                                    <i class="bi bi-tags"></i> Keywords:
+                                </small>
+                                <div class="mt-2">
+                                    {% for keyword in project.keywords.all %}
+                                        <span class="keyword-tag">{{ keyword.label }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="text-md-end">
+                                <div class="mb-3">
+                                    <small class="text-muted">
+                                        <i class="bi bi-calendar"></i> Created: {{ project.created_at|date:"M d, Y" }}
+                                    </small>
+                                </div>
+
+                                <div class="mb-3">
+                                    <small class="text-muted">
+                                        <i class="bi bi-person"></i> By: {{ project.posted_by.user.username }}
+                                    </small>
+                                </div>
+
+                                {% if project.budget %}
+                                <div class="mb-3">
+                                    <span class="badge bg-warning text-dark">
+                                        <i class="bi bi-currency-dollar"></i> ${{ project.budget }}
+                                    </span>
+                                </div>
+                                {% endif %}
+
+                                <div class="d-grid gap-2">
+                                    <a href="{% url 'project_detail' project.id %}" class="btn btn-outline-primary btn-sm">
+                                        <i class="bi bi-eye"></i> View Details
+                                    </a>
+                                    {% if user.is_authenticated %}
+                                        {% if user.profile.user_type == 'student' or user.profile.user_type == 'researcher' %}
+                                            {% if project.status == 'open' %}
+                                                {% if project.user_has_applied %}
+                                                    <button class="btn btn-success btn-sm" disabled>
+                                                        <i class="bi bi-check-circle"></i> Applied
+                                                    </button>
+                                                {% else %}
+                                                    <a href="{% url 'project_apply' project.id %}" class="btn btn-primary btn-sm">
+                                                        <i class="bi bi-person-plus"></i> Apply
+                                                    </a>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-projects">
+                    <i class="bi bi-lightbulb-off" style="font-size: 5rem; color: #dee2e6;"></i>
+                    <h3 class="mt-4 text-muted">No Suggestions Available</h3>
+                    <p class="text-muted">We couldn't find projects matching your profile. Try updating your keywords and specialization in your profile, or browse all available projects.</p>
+                    <div class="mt-3">
+                        <a href="{% url 'profile_edit' %}" class="btn btn-primary me-2">
+                            <i class="bi bi-pencil"></i> Update Profile
+                        </a>
+                        <a href="{% url 'project_list' %}" class="btn btn-secondary">
+                            <i class="bi bi-list"></i> Browse All Projects
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .page-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 20px;
+        padding: 30px;
+        margin-bottom: 30px;
+    }
+
+    .project-card {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        border-left: 5px solid #007bff;
+    }
+
+    .project-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+
+    .project-title {
+        color: #2c3e50;
+        font-weight: 600;
+        margin-bottom: 10px;
+        text-decoration: none;
+    }
+
+    .project-title:hover {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .project-meta {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+    }
+
+    .meta-badge {
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+
+    .keywords-section {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #e9ecef;
+    }
+
+    .keyword-tag {
+        display: inline-block;
+        background: #f8f9fa;
+        color: #495057;
+        padding: 4px 10px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        margin: 2px;
+        border: 1px solid #dee2e6;
+    }
+
+    .no-projects {
+        text-align: center;
+        padding: 60px 20px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+</style>
+{% endblock %}

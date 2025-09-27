@@ -1,0 +1,31 @@
+- Work: The user has just completed adding edit profile functionality to their Django app called KBTuneco. Now they want a comprehensive description of the app's current functionality and proposals for improvements to enhance the platform.
+
+- Key Technical Concepts:
+
+  - Django web framework
+  - User authentication and profiles
+  - Project management system
+  - Collaboration platform
+  - Multiple user types (students, researchers, universities, companies, associations, medical staff)
+  - Messaging and document sharing
+  - Event management
+  - Application/review system for projects
+
+- Relevant Files and Code:
+
+  - core/models.py: Contains all the data models (Profile, Project, Organization, Message, Document, Event, etc.)
+  - core/views.py: All the view functions for handling requests
+  - core/forms.py: Forms for user input
+  - core/urls.py: URL routing
+  - templates/: HTML templates for the frontend
+  - The app is a collaboration platform for academic and professional project matching
+
+- Problem Solving: The app is a functional platform but may need enhancements for better user experience, additional features, and scalability.
+
+- Pending Tasks and Next Steps:
+
+  - Create a detailed description of current app functionality
+  - Analyze the codebase to understand all features
+  - Propose specific improvements and new features
+  - Suggest implementation priorities
+  - Provide technical recommendations for enhancements

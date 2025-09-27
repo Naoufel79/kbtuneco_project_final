@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}About - KBTuneco{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="bg-gradient-to-r from-primary to-primary-dark text-white py-20 text-center">
+    <div class="max-w-4xl mx-auto px-4">
+        <h1 class="text-4xl md:text-6xl font-bold font-display mb-6">KBTuneco</h1>
+        <p class="text-xl opacity-90 max-w-2xl mx-auto">
+            {% get_current_language as LANGUAGE_CODE %}
+            {% if LANGUAGE_CODE == 'fr' %}
+                Un portail national de mise en réseau qui cartographie les compétences et facilite l'innovation
+            {% elif LANGUAGE_CODE == 'ar' %}
+                منصة  وطنية ترسم المهارات وتسهل التواصل بين الشركات و الطلبة
+            {% else %}
+                A national networking platform that maps skills and facilitates innovation
+            {% endif %}
+        </p>
+    </div>
+</section>
+
+<!-- Mission Section -->
+<section class="py-20 bg-white">
+    <div class="max-w-4xl mx-auto text-center px-4">
+        <h2 class="text-4xl font-bold font-display mb-8 text-gray-800">{% if LANGUAGE_CODE == 'fr' %}Notre Mission{% elif LANGUAGE_CODE == 'ar' %}مهمتنا{% else %}Our Mission{% endif %}</h2>
+        <p class="text-lg text-gray-600 mb-12 leading-relaxed">
+            {% if LANGUAGE_CODE == 'fr' %}
+                KBTuneco est un portail national dédié à la mise en réseau des acteurs de l'innovation en Tunisie.
+                Notre plateforme facilite la collaboration entre universités, entreprises et chercheurs pour
+                promouvoir l'innovation et le transfert technologique.
+            {% elif LANGUAGE_CODE == 'ar' %}
+                كي بي تونيكو منصة وطنية مخصصة لربط أصحاب المصلحة في الابتكار في تونس.
+                توفر منصتنا التعاون بين الجامعات والشركات والباحثين لتعزيز الابتكار ونقل التكنولوجيا.
+            {% else %}
+                KBTuneco is a national platform dedicated to networking innovation stakeholders in Tunisia.
+                Our platform facilitates collaboration between universities, companies and researchers to
+                promote innovation and technology transfer.
+            {% endif %}
+        </p>
+
+        <div class="bg-blue-50 border-l-4 border-primary p-8 rounded-r-lg">
+            <h3 class="text-xl font-semibold text-primary mb-4">
+                {% if LANGUAGE_CODE == 'fr' %}Cartographie des Compétences{% elif LANGUAGE_CODE == 'ar' %}رسم المهارات{% else %}Skills Mapping{% endif %}
+            </h3>
+            <p class="text-gray-700 text-left">
+                {% if LANGUAGE_CODE == 'fr' %}
+                    Nous cartographions les compétences des étudiants, chercheurs, laboratoires et entreprises
+                    pour créer une visibilité complète du potentiel d'innovation tunisien.
+                {% elif LANGUAGE_CODE == 'ar' %}
+                    نرسم مهارات الطلاب والباحثين والمختبرات والشركات لإنشاء رؤية كاملة لإمكانيات الابتكار في تونس.
+                {% else %}
+                    We map the skills of students, researchers, laboratories and companies to create a complete
+                    visibility of Tunisia's innovation potential.
+                {% endif %}
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-20 bg-gray-50">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-white rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow text-center">
+                <div class="bg-primary/10 rounded-full p-4 w-16 h-16 mx-auto mb-6 flex items-center justify-center">
+                    <i class="bi bi-diagram-3 text-primary text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-4 text-gray-800">Coopération Universités-Entreprises</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    Facilite la coopération entre universités et entreprises à travers des projets communs,
+                    stages et contrats de recherche.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow text-center">
+                <div class="bg-secondary/10 rounded-full p-4 w-16 h-16 mx-auto mb-6 flex items-center justify-center">
+                    <i class="bi bi-lightbulb text-secondary text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-4 text-gray-800">Innovation et Transfert Technologique</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    Favorise l'innovation et le transfert technologique pour renforcer la compétitivité
+                    des entreprises tunisiennes.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow text-center">
+                <div class="bg-primary/10 rounded-full p-4 w-16 h-16 mx-auto mb-6 flex items-center justify-center">
+                    <i class="bi bi-mortarboard text-primary text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-4 text-gray-800">Employabilité des Jeunes Diplômés</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    Renforce l'employabilité des jeunes diplômés en créant des liens directs entre
+                    l'éducation et le marché du travail.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow text-center">
+                <div class="bg-secondary/10 rounded-full p-4 w-16 h-16 mx-auto mb-6 flex items-center justify-center">
+                    <i class="bi bi-search text-secondary text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-4 text-gray-800">Adaptation aux Besoins du Marché</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    Adapte la recherche aux besoins du marché tunisien, notamment les PME qui manquent
+                    d'accès à l'innovation.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow text-center">
+                <div class="bg-primary/10 rounded-full p-4 w-16 h-16 mx-auto mb-6 flex items-center justify-center">
+                    <i class="bi bi-eye text-primary text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-4 text-gray-800">Visibilité des Chercheurs</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    Donne de la visibilité aux chercheurs et laboratoires pour valoriser leur travail
+                    et faciliter les collaborations.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow text-center">
+                <div class="bg-secondary/10 rounded-full p-4 w-16 h-16 mx-auto mb-6 flex items-center justify-center">
+                    <i class="bi bi-people text-secondary text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-4 text-gray-800">Réserve de Talents TIC</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    Crée une réserve de talents pour l'industrie des Technologies de l'Information
+                    et de la Communication.
+                </p>
+            </div>
+        </div>
+
+        <div class="mt-12 bg-white rounded-xl p-8 shadow-sm">
+            <h3 class="text-2xl font-bold font-display mb-6 text-gray-800 text-center">Objectif Principal</h3>
+            <p class="text-gray-700 text-center leading-relaxed max-w-4xl mx-auto">
+                Créer un écosystème d'innovation dynamique où les connaissances académiques
+                rencontrent les besoins industriels, favorisant ainsi le développement économique
+                et technologique de la Tunisie.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="py-20 bg-gray-900 text-white text-center">
+    <div class="max-w-4xl mx-auto px-4">
+        <h2 class="text-4xl font-bold font-display mb-6">Rejoignez Notre Communauté</h2>
+        <p class="text-xl opacity-90 mb-12 max-w-2xl mx-auto">
+            Que vous soyez étudiant, chercheur, entreprise ou laboratoire, KBTuneco vous offre
+            les outils pour collaborer et innover ensemble.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-6 justify-center">
+            {% if user.is_authenticated %}
+                <a href="{% url 'project_list' %}" class="bg-primary hover:bg-primary-dark px-8 py-4 rounded-xl font-medium transition-all shadow-lg">
+                    <i class="bi bi-folder mr-2"></i>Explorer les Projets
+                </a>
+                <a href="{% url 'dashboard' %}" class="border-2 border-white hover:bg-white hover:text-gray-900 px-8 py-4 rounded-xl font-medium transition-all">
+                    <i class="bi bi-speedometer2 mr-2"></i>Tableau de Bord
+                </a>
+            {% else %}
+                <a href="{% url 'register' %}" class="bg-primary hover:bg-primary-dark px-8 py-4 rounded-xl font-medium transition-all shadow-lg">
+                    <i class="bi bi-person-plus mr-2"></i>S'inscrire
+                </a>
+                <a href="{% url 'login' %}" class="border-2 border-white hover:bg-white hover:text-gray-900 px-8 py-4 rounded-xl font-medium transition-all">
+                    <i class="bi bi-box-arrow-in-right mr-2"></i>Se Connecter
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

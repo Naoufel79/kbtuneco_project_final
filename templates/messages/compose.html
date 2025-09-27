@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% block title %}Compose Message - KBTuneco Project{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">
+                    <i class="bi bi-pencil-square"></i> Compose Message
+                </h2>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="{{ form.recipient.id_for_label }}" class="form-label">
+                            <i class="bi bi-person"></i> Recipient
+                        </label>
+                        {% if recipient_profile %}
+                            <!-- Pre-populated recipient - make it readonly -->
+                            <div class="form-control bg-light" readonly>
+                                {{ recipient_profile.user.get_full_name|default:recipient_profile.user.username }}
+                            </div>
+                            {{ form.recipient.as_hidden }}
+                        {% else %}
+                            {{ form.recipient }}
+                        {% endif %}
+                        {% if form.recipient.errors %}
+                            <div class="text-danger">
+                                {% for error in form.recipient.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.subject.id_for_label }}" class="form-label">
+                            <i class="bi bi-tag"></i> Subject
+                        </label>
+                        {{ form.subject }}
+                        {% if form.subject.errors %}
+                            <div class="text-danger">
+                                {% for error in form.subject.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="{{ form.body.id_for_label }}" class="form-label">
+                            <i class="bi bi-chat-text"></i> Message
+                        </label>
+                        {{ form.body }}
+                        {% if form.body.errors %}
+                            <div class="text-danger">
+                                {% for error in form.body.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'inbox' %}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Back to Inbox
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-send"></i> Send Message
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .card-header {
+        border-radius: 15px 15px 0 0 !important;
+        border: none;
+        padding: 20px;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 8px;
+    }
+
+    .form-control, .form-select {
+        border-radius: 10px;
+        border: 2px solid #e9ecef;
+        padding: 12px 16px;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+    }
+
+    .btn {
+        border-radius: 25px;
+        padding: 12px 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .text-danger {
+        font-size: 0.875rem;
+        margin-top: 5px;
+    }
+</style>
+{% endblock %}

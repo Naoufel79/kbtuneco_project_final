@@ -1,0 +1,281 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Dashboard" %} - KBTuneco{% endblock %}
+
+{% block content %}
+<!-- Welcome Section -->
+<section class="bg-gradient-to-r from-primary to-primary-dark text-white rounded-2xl p-12 mb-8 text-center">
+    <h1 class="text-4xl md:text-5xl font-bold font-display mb-4">
+        <i class="bi bi-speedometer2 mr-2"></i>{% trans "Welcome to KBTuneco Dashboard" %}
+    </h1>
+    <p class="text-xl opacity-90 max-w-2xl mx-auto">{% trans "Your coordination platform for 2026 projects and collaborations" %}</p>
+</section>
+
+<!-- Statistics Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
+        <div class="flex items-center">
+            <div class="flex-1">
+                <div class="text-3xl font-bold text-primary mb-1">{{ total_projects }}</div>
+                <div class="text-gray-600 flex items-center">
+                    <i class="bi bi-folder mr-2"></i>{% trans "Total Projects" %}
+                </div>
+            </div>
+            <div class="bg-primary/10 rounded-full p-3">
+                <i class="bi bi-folder-fill text-3xl text-primary opacity-75"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
+        <div class="flex items-center">
+            <div class="flex-1">
+                <div class="text-3xl font-bold text-secondary mb-1">{{ open_projects }}</div>
+                <div class="text-gray-600 flex items-center">
+                    <i class="bi bi-folder-plus mr-2"></i>{% trans "Open Projects" %}
+                </div>
+            </div>
+            <div class="bg-secondary/10 rounded-full p-3">
+                <i class="bi bi-folder-plus text-3xl text-secondary opacity-75"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
+        <div class="flex items-center">
+            <div class="flex-1">
+                <div class="text-3xl font-bold text-primary mb-1">{{ total_users }}</div>
+                <div class="text-gray-600 flex items-center">
+                    <i class="bi bi-people mr-2"></i>{% trans "Total Users" %}
+                </div>
+            </div>
+            <div class="bg-primary/10 rounded-full p-3">
+                <i class="bi bi-people-fill text-3xl text-primary opacity-75"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
+        <div class="flex items-center">
+            <div class="flex-1">
+                <div class="text-3xl font-bold text-secondary mb-1">{{ projects_posted }}</div>
+                <div class="text-gray-600 flex items-center">
+                    <i class="bi bi-plus-circle mr-2"></i>{% trans "Projects Posted" %}
+                </div>
+            </div>
+            <div class="bg-secondary/10 rounded-full p-3">
+                <i class="bi bi-plus-circle-fill text-3xl text-secondary opacity-75"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- User Statistics Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
+        <div class="flex items-center">
+            <div class="flex-1">
+                <div class="text-3xl font-bold text-primary mb-1">{{ messages_sent }}</div>
+                <div class="text-gray-600 flex items-center">
+                    <i class="bi bi-send mr-2"></i>{% trans "Messages Sent" %}
+                </div>
+            </div>
+            <div class="bg-primary/10 rounded-full p-3">
+                <i class="bi bi-send-fill text-3xl text-primary opacity-75"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
+        <div class="flex items-center">
+            <div class="flex-1">
+                <div class="text-3xl font-bold text-secondary mb-1">{{ messages_received }}</div>
+                <div class="text-gray-600 flex items-center">
+                    <i class="bi bi-inbox mr-2"></i>{% trans "Messages Received" %}
+                </div>
+            </div>
+            <div class="bg-secondary/10 rounded-full p-3">
+                <i class="bi bi-inbox-fill text-3xl text-secondary opacity-75"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
+        <div class="flex items-center">
+            <div class="flex-1">
+                <div class="text-3xl font-bold text-primary mb-1">{{ documents_uploaded }}</div>
+                <div class="text-gray-600 flex items-center">
+                    <i class="bi bi-file-earmark mr-2"></i>{% trans "Documents Uploaded" %}
+                </div>
+            </div>
+            <div class="bg-primary/10 rounded-full p-3">
+                <i class="bi bi-file-earmark-fill text-3xl text-primary opacity-75"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
+        <div class="flex items-center">
+            <div class="flex-1">
+                <div class="text-3xl font-bold text-secondary mb-1">{{ recent_projects|length }}</div>
+                <div class="text-gray-600 flex items-center">
+                    <i class="bi bi-activity mr-2"></i>{% trans "Recent Activity" %}
+                </div>
+            </div>
+            <div class="bg-secondary/10 rounded-full p-3">
+                <i class="bi bi-activity text-3xl text-secondary opacity-75"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Projects and Quick Actions -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Recent Projects -->
+    <div class="lg:col-span-2">
+        <div class="bg-white rounded-xl shadow-md p-6">
+            <h3 class="text-2xl font-bold font-display mb-6 flex items-center text-gray-800">
+                <i class="bi bi-clock-history mr-2 text-primary"></i>{% trans "Recent Projects" %}
+            </h3>
+
+            {% if recent_projects %}
+                <div class="space-y-4">
+                    {% for project in recent_projects %}
+                    <div class="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors border-l-4 border-primary">
+                        <div class="flex justify-between items-start mb-2">
+                            <h5 class="font-semibold text-lg">
+                                <a href="{% url 'project_detail' project.id %}" class="text-gray-800 hover:text-primary transition-colors">{{ project.title }}</a>
+                            </h5>
+                            <span class="text-sm text-gray-500"><i class="bi bi-calendar mr-1"></i>{{ project.created_at|date:"M d, Y" }}</span>
+                        </div>
+                        <p class="text-gray-600 mb-3">{{ project.description|truncatewords:15 }}</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium">{{ project.get_project_type_display }}</span>
+                            <span class="px-2 py-1 bg-secondary/10 text-secondary rounded-full text-xs font-medium">{{ project.get_specialization_needed_display }}</span>
+                            <span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">{{ project.get_status_display }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="text-center mt-6">
+                    <a href="{% url 'project_list' %}" class="inline-flex items-center px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary-dark transition-all font-medium">
+                        <i class="bi bi-arrow-right mr-2"></i>{% trans "View All Projects" %}
+                    </a>
+                </div>
+            {% else %}
+                <div class="text-center py-12">
+                    <i class="bi bi-folder-x text-8xl text-gray-300 mb-4"></i>
+                    <h5 class="text-xl font-medium text-gray-700 mb-2">{% trans "No recent projects" %}</h5>
+                    <p class="text-gray-500">{% trans "Start by creating your first project!" %}</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="bg-white rounded-xl shadow-md p-6">
+            <h3 class="text-2xl font-bold font-display mb-6 flex items-center text-gray-800">
+                <i class="bi bi-lightning mr-2 text-secondary"></i>{% trans "Quick Actions" %}
+            </h3>
+
+        <div class="space-y-3">
+            <a href="{% url 'project_create' %}" class="block w-full bg-primary text-white py-3 px-4 rounded-xl hover:bg-primary-dark transition-all font-medium text-center">
+                <i class="bi bi-plus-circle mr-2"></i>{% trans "Create New Project" %}
+            </a>
+
+            <a href="{% url 'project_list' %}" class="block w-full border border-primary text-primary py-3 px-4 rounded-xl hover:bg-primary hover:text-white transition-all font-medium text-center">
+                <i class="bi bi-folder mr-2"></i>{% trans "Browse Projects" %}
+            </a>
+
+            <a href="{% url 'suggestions' %}" class="block w-full border border-secondary text-secondary py-3 px-4 rounded-xl hover:bg-secondary hover:text-white transition-all font-medium text-center">
+                <i class="bi bi-lightbulb mr-2"></i>{% trans "View Suggestions" %}
+            </a>
+
+            <a href="{% url 'messages' %}" class="block w-full border border-blue-500 text-blue-600 py-3 px-4 rounded-xl hover:bg-blue-500 hover:text-white transition-all font-medium text-center">
+                <i class="bi bi-envelope mr-2"></i>{% trans "Messages" %}
+            </a>
+
+            <a href="{% url 'events_list' %}" class="block w-full border border-yellow-500 text-yellow-600 py-3 px-4 rounded-xl hover:bg-yellow-500 hover:text-white transition-all font-medium text-center">
+                <i class="bi bi-calendar-event mr-2"></i>{% trans "Events" %}
+            </a>
+
+            <a href="{% url 'profile_edit' %}" class="block w-full border border-gray-500 text-gray-600 py-3 px-4 rounded-xl hover:bg-gray-500 hover:text-white transition-all font-medium text-center">
+                <i class="bi bi-person mr-2"></i>{% trans "Profile Settings" %}
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Additional Info Section -->
+<div class="mt-8 bg-white rounded-xl shadow-md p-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+        <div>
+            <div class="bg-green-100 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <i class="bi bi-shield-check text-green-600 text-2xl"></i>
+            </div>
+            <h5 class="font-semibold text-lg mb-2 text-gray-800">{% trans "Secure Platform" %}</h5>
+            <p class="text-gray-600">{% trans "Your data is protected with enterprise-grade security" %}</p>
+        </div>
+
+        <div>
+            <div class="bg-primary/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <i class="bi bi-people text-primary text-2xl"></i>
+            </div>
+            <h5 class="font-semibold text-lg mb-2 text-gray-800">{% trans "Collaboration" %}</h5>
+            <p class="text-gray-600">{% trans "Connect with researchers, students, and companies" %}</p>
+        </div>
+
+        <div>
+            <div class="bg-blue-100 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <i class="bi bi-graph-up text-blue-600 text-2xl"></i>
+            </div>
+            <h5 class="font-semibold text-lg mb-2 text-gray-800">{% trans "Track Progress" %}</h5>
+            <p class="text-gray-600">{% trans "Monitor your projects and achievements" %}</p>
+        </div>
+
+        <div>
+            <div class="bg-yellow-100 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <i class="bi bi-award text-yellow-600 text-2xl"></i>
+            </div>
+            <h5 class="font-semibold text-lg mb-2 text-gray-800">{% trans "Recognition" %}</h5>
+            <p class="text-gray-600">{% trans "Get recognized for your contributions" %}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Add some interactive animations
+    document.addEventListener('DOMContentLoaded', function() {
+        // Animate stats cards on load
+        const statsCards = document.querySelectorAll('.stats-card');
+        statsCards.forEach((card, index) => {
+            setTimeout(() => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'all 0.6s ease';
+                
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100);
+            }, index * 200);
+        });
+        
+        // Add click animation to action buttons
+        const actionBtns = document.querySelectorAll('.action-btn');
+        actionBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+    });
+</script>
+{% endblock %}

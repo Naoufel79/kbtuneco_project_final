@@ -1,0 +1,211 @@
+# django.po for Arabic (ar)
+msgid ""
+msgstr ""
+"Language: ar\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "Dashboard"
+msgstr "لوحة التحكم"
+
+msgid "Projects"
+msgstr "المشاريع"
+
+msgid "Suggestions"
+msgstr "الاقتراحات"
+
+msgid "Events"
+msgstr "الفعاليات"
+
+msgid "Welcome to KBTuneco Dashboard"
+msgstr "مرحباً بك في لوحة تحكم KBTuneco"
+
+msgid "Your coordination platform for 2026 projects and collaborations"
+msgstr "منصة التنسيق الخاصة بك لمشاريع وتعاونات 2026"
+
+msgid "Total Projects"
+msgstr "إجمالي المشاريع"
+
+msgid "Open Projects"
+msgstr "المشاريع المفتوحة"
+
+msgid "Total Users"
+msgstr "إجمالي المستخدمين"
+
+msgid "Projects Posted"
+msgstr "المشاريع المنشورة"
+
+msgid "Messages Sent"
+msgstr "الرسائل المرسلة"
+
+msgid "Messages Received"
+msgstr "الرسائل المستلمة"
+
+msgid "Documents Uploaded"
+msgstr "المستندات المرفوعة"
+
+msgid "Recent Activity"
+msgstr "النشاط الحديث"
+
+msgid "Recent Projects"
+msgstr "المشاريع الحديثة"
+
+msgid "View All Projects"
+msgstr "عرض جميع المشاريع"
+
+msgid "No recent projects"
+msgstr "لا توجد مشاريع حديثة"
+
+msgid "Start by creating your first project!"
+msgstr "ابدأ بإنشاء مشروعك الأول!"
+
+msgid "Quick Actions"
+msgstr "الإجراءات السريعة"
+
+msgid "Create New Project"
+msgstr "إنشاء مشروع جديد"
+
+msgid "Browse Projects"
+msgstr "تصفح المشاريع"
+
+msgid "View Suggestions"
+msgstr "عرض الاقتراحات"
+
+msgid "Messages"
+msgstr "الرسائل"
+
+msgid "Profile Settings"
+msgstr "إعدادات الملف الشخصي"
+
+msgid "Secure Platform"
+msgstr "منصة آمنة"
+
+msgid "Your data is protected with enterprise-grade security"
+msgstr "بياناتك محمية بأمان على مستوى المؤسسات"
+
+msgid "Collaboration"
+msgstr "التعاون"
+
+msgid "Connect with researchers, students, and companies"
+msgstr "تواصل مع الباحثين والطلاب والشركات"
+
+msgid "Track Progress"
+msgstr "تتبع التقدم"
+
+msgid "Monitor your projects and achievements"
+msgstr "راقب مشاريعك وإنجازاتك"
+
+msgid "Recognition"
+msgstr "التقدير"
+
+msgid "Get recognized for your contributions"
+msgstr "احصل على التقدير لمساهماتك"
+
+msgid "KBTuneco Project"
+msgstr "مشروع KBTuneco"
+
+msgid "Login"
+msgstr "تسجيل الدخول"
+
+msgid "Register"
+msgstr "التسجيل"
+
+msgid "Profile"
+msgstr "الملف الشخصي"
+
+msgid "My Projects"
+msgstr "مشاريعي"
+
+msgid "Logout"
+msgstr "تسجيل الخروج"
+
+msgid "English"
+msgstr "الإنجليزية"
+
+msgid "Français"
+msgstr "الفرنسية"
+
+msgid "العربية"
+msgstr "العربية"
+
+msgid "EN"
+msgstr "EN"
+
+msgid "FR"
+msgstr "FR"
+
+msgid "AR"
+msgstr "AR"
+
+# Login page translations
+msgid "Login"
+msgstr "تسجيل الدخول"
+
+msgid "Welcome Back"
+msgstr "مرحبًا بعودتك"
+
+msgid "Sign in to your KBTuneco account"
+msgstr "قم بتسجيل الدخول إلى حسابك في KBTuneco"
+
+msgid "Please correct the errors below."
+msgstr "يرجى تصحيح الأخطاء أدناه."
+
+msgid "Username"
+msgstr "اسم المستخدم"
+
+msgid "Enter your username"
+msgstr "أدخل اسم المستخدم"
+
+msgid "Password"
+msgstr "كلمة المرور"
+
+msgid "Enter your password"
+msgstr "أدخل كلمة المرور"
+
+msgid "Forgot Password?"
+msgstr "هل نسيت كلمة المرور؟"
+
+msgid "Sign In"
+msgstr "تسجيل الدخول"
+
+msgid "Don't have an account?"
+msgstr "ليس لديك حساب؟"
+
+msgid "Create New Account"
+msgstr "إنشاء حساب جديد"
+
+msgid "Secure Login"
+msgstr "تسجيل دخول آمن"
+
+msgid "Join Community"
+msgstr "انضم إلى المجتمع"
+
+msgid "Manage Projects"
+msgstr "إدارة المشاريع"
+
+msgid "Signing In..."
+msgstr "جاري تسجيل الدخول..."
+
+# Project application actions
+msgid "Withdraw"
+msgstr "سحب الطلب"
+
+msgid "Your application has been withdrawn."
+msgstr "تم سحب طلبك."
+
+msgid "You have no application for this project."
+msgstr "ليس لديك طلب لهذا المشروع."
+
+msgid "Only students and researchers can apply to projects."
+msgstr "يمكن للطلاب والباحثين فقط التقديم على المشاريع."
+
+msgid "This project is not open for applications."
+msgstr "هذا المشروع غير مفتوح للتقديم."
+
+msgid "Application submitted successfully."
+msgstr "تم إرسال الطلب بنجاح."
+
+msgid "Invalid request method."
+msgstr "طريقة طلب غير صالحة."
+
+msgid "Browse Projects"
+msgstr "تصفح المشاريع"

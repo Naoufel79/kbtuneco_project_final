@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Profile - {{ profile.user.username }}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen py-12 px-4">
+    <div class="max-w-4xl mx-auto">
+        <!-- Profile Header -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+            <div class="text-center mb-8">
+                <div class="bg-gradient-to-r from-primary to-primary-dark rounded-full p-6 w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+                    <i class="bi bi-person text-3xl text-white"></i>
+                </div>
+                <h1 class="text-3xl font-bold font-display text-gray-800 mb-2">{{ profile.user.username }}</h1>
+                <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-primary/10 text-primary">
+                    {{ profile.get_user_type_display }}
+                </span>
+            </div>
+
+            <!-- Basic Information -->
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                        <i class="bi bi-person-lines-fill mr-2 text-primary"></i>
+                        Basic Information
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex justify-between items-center py-3 border-b border-gray-200">
+                            <span class="font-medium text-gray-700">Username:</span>
+                            <span class="text-gray-600">{{ profile.user.username }}</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-200">
+                            <span class="font-medium text-gray-700">Email:</span>
+                            <span class="text-gray-600">{{ profile.user.email|default:"Not provided" }}</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-200">
+                            <span class="font-medium text-gray-700">Contact Email:</span>
+                            <span class="text-gray-600">{{ profile.contact_email|default:"Not provided" }}</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-200">
+                            <span class="font-medium text-gray-700">Phone:</span>
+                            <span class="text-gray-600">{{ profile.phone|default:"Not provided" }}</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-200 md:col-span-2">
+                            <span class="font-medium text-gray-700">Member Since:</span>
+                            <span class="text-gray-600">{{ profile.created_at|date:"M d, Y" }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Professional Information -->
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                        <i class="bi bi-building mr-2 text-secondary"></i>
+                        Professional Information
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex justify-between items-center py-3 border-b border-gray-200">
+                            <span class="font-medium text-gray-700">User Type:</span>
+                            <span class="text-gray-600">{{ profile.get_user_type_display }}</span>
+                        </div>
+                        {% if profile.organization %}
+                        <div class="flex justify-between items-center py-3 border-b border-gray-200">
+                            <span class="font-medium text-gray-700">Organization:</span>
+                            <span class="text-gray-600">{{ profile.organization.name }}</span>
+                        </div>
+                        {% endif %}
+                        {% if profile.institution_type %}
+                        <div class="flex justify-between items-center py-3 border-b border-gray-200">
+                            <span class="font-medium text-gray-700">Institution Type:</span>
+                            <span class="text-gray-600">{{ profile.get_institution_type_display }}</span>
+                        </div>
+                        {% endif %}
+                        <div class="flex justify-between items-center py-3 border-b border-gray-200">
+                            <span class="font-medium text-gray-700">Specialization:</span>
+                            <span class="text-gray-600">{{ profile.get_specialization_display }}</span>
+                        </div>
+                        {% if profile.bio %}
+                        <div class="flex justify-between items-center py-3 border-b border-gray-200 md:col-span-2">
+                            <span class="font-medium text-gray-700">Bio:</span>
+                            <span class="text-gray-600">{{ profile.bio|truncatechars:100 }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Keywords -->
+                {% if profile.keywords.all %}
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                        <i class="bi bi-tags mr-2 text-primary"></i>
+                        Keywords of Interest
+                    </h3>
+                    <div class="flex flex-wrap gap-2">
+                        {% for keyword in profile.keywords.all %}
+                        <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">{{ keyword.label }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Activity Overview -->
+        <div class="bg-gradient-to-r from-primary to-primary-dark text-white rounded-2xl p-8 mb-8">
+            <h2 class="text-2xl font-bold font-display text-center mb-8">Activity Overview</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center cursor-pointer hover:bg-white/20 transition-all" onclick="window.location.href='{% url 'user_projects' %}'">
+                    <div class="text-3xl font-bold mb-2">{{ profile.posted_projects.count }}</div>
+                    <div class="text-sm opacity-90">Projects Posted</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center">
+                    <div class="text-3xl font-bold mb-2">{{ profile.sent_messages.count }}</div>
+                    <div class="text-sm opacity-90">Messages Sent</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center">
+                    <div class="text-3xl font-bold mb-2">{{ profile.received_messages.count }}</div>
+                    <div class="text-sm opacity-90">Messages Received</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center">
+                    <div class="text-3xl font-bold mb-2">{{ profile.documents.count }}</div>
+                    <div class="text-sm opacity-90">Documents Uploaded</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="text-center space-y-4 md:space-y-0 md:flex md:justify-center md:space-x-4">
+            <a href="{% url 'profile_edit' %}" class="block md:inline-block bg-primary hover:bg-primary-dark text-white py-3 px-6 rounded-xl font-medium transition-all shadow-lg">
+                <i class="bi bi-pencil-square mr-2"></i>Edit Profile
+            </a>
+            {% if user.profile.user_type == 'student' or user.profile.user_type == 'researcher' %}
+                <a href="{% url 'my_applications' %}" class="block md:inline-block bg-secondary hover:bg-secondary-dark text-white py-3 px-6 rounded-xl font-medium transition-all shadow-lg">
+                    <i class="bi bi-send-check mr-2"></i>My Applications
+                </a>
+            {% else %}
+                <a href="{% url 'user_projects' %}" class="block md:inline-block bg-secondary hover:bg-secondary-dark text-white py-3 px-6 rounded-xl font-medium transition-all shadow-lg">
+                    <i class="bi bi-folder mr-2"></i>View My Projects
+                </a>
+            {% endif %}
+            <a href="{% url 'project_list' %}" class="block md:inline-block bg-gray-500 hover:bg-gray-600 text-white py-3 px-6 rounded-xl font-medium transition-all shadow-lg">
+                <i class="bi bi-arrow-left mr-2"></i>Back to Projects
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
