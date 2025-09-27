@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+.eggs/
+*.log
+
+# Environments
+.env
+.env.*
+.venv/
+venv/
+env/
+ENV/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Django
+db.sqlite3
+media/
+staticfiles/
+collectstatic/
+*.mo  # compiled gettext binaries (rebuild on server)
+htmlcov/
+.coverage
+.coverage.*
+.pytest_cache/
+
+# Node (in case of future additions)
+node_modules/
+
+# Misc
+*.bak
+*.swp
+*.tmp
