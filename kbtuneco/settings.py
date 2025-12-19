@@ -1,12 +1,42 @@
-from pathlib import Path
+﻿from pathlib import Path
 import os
+
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Environment
+DJANGO_ENV = os.environ.get('DJANGO_ENV', 'local').lower()  # local | production
+
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'demo-secret-key-please-change')
-DEBUG = os.environ.get('DJANGO_DEBUG', 'True').lower() in ('1', 'true', 'yes', 'on')
-ALLOWED_HOSTS = [h.strip() for h in os.environ.get('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost,testserver').split(',') if h.strip()]
-CSRF_TRUSTED_ORIGINS = [o if o.startswith('http') else f"https://{o}" for o in ALLOWED_HOSTS]
+
+_debug_env = os.environ.get('DJANGO_DEBUG')
+if _debug_env is None:
+    DEBUG = DJANGO_ENV != 'production'
+else:
+    DEBUG = _debug_env.lower() in ('1', 'true', 'yes', 'on')
+
+# Railway provides this when a public domain is assigned
+RAILWAY_PUBLIC_DOMAIN = os.environ.get('RAILWAY_PUBLIC_DOMAIN')
+
+_default_allowed_hosts = ['127.0.0.1', 'localhost', 'testserver'] if DEBUG else ['127.0.0.1', 'localhost']
+if RAILWAY_PUBLIC_DOMAIN:
+    _default_allowed_hosts.append(RAILWAY_PUBLIC_DOMAIN)
+
+ALLOWED_HOSTS = [
+    h.strip() for h in os.environ.get('DJANGO_ALLOWED_HOSTS', ','.join(_default_allowed_hosts)).split(',')
+    if h.strip()
+]
+
+# CSRF trusted origins must include scheme
+_default_csrf = ['http://127.0.0.1', 'http://localhost'] if DEBUG else []
+if RAILWAY_PUBLIC_DOMAIN:
+    _default_csrf.append(f"https://{RAILWAY_PUBLIC_DOMAIN}")
+
+CSRF_TRUSTED_ORIGINS = [
+    o.strip() for o in os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS', ','.join(_default_csrf)).split(',')
+    if o.strip()
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -20,6 +50,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -52,12 +83,25 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'kbtuneco.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Database
+DATABASE_URL = os.environ.get('DATABASE_URL')
+if DATABASE_URL:
+    # Railway often provides a postgres:// URL. SSL is usually handled via the URL; keep a toggle anyway.
+    _ssl_require = os.environ.get('DATABASE_SSL_REQUIRE', 'False').lower() in ('1', 'true', 'yes', 'on')
+    DATABASES = {
+        'default': dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=_ssl_require,
+        )
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -81,8 +125,8 @@ LOCALE_PATHS = [
     BASE_DIR / 'locale',
 ]
 
-GET_LANGUAGE_FROM_REQUEST = True  # Allow language detection from query params if needed, but set_language uses GET
-GET_LANGUAGE_FROM_REQUEST_CODE = 'language'  # More relevant config
+GET_LANGUAGE_FROM_REQUEST = True
+GET_LANGUAGE_FROM_REQUEST_CODE = 'language'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
@@ -90,14 +134,27 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# Django 5+ storage config
+STORAGES = {
+    'default': {
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+    },
+    'staticfiles': {
+        'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage',
+    },
+}
+
+if not DEBUG:
+    STORAGES['staticfiles']['BACKEND'] = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 # File upload constraints (used by DocumentForm validation)
 MAX_UPLOAD_SIZE = 10 * 1024 * 1024  # 10 MB
 ALLOWED_FILE_TYPES = [
     'application/pdf',
     'image/jpeg',
     'image/png',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',  # .docx
-    'application/msword',  # .doc
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/msword',
 ]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -105,7 +162,6 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = 'about'
 
-# Simple in-memory cache for faster list pages and API responses
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
@@ -115,6 +171,9 @@ CACHES = {
 
 # Security flags for production
 if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    USE_X_FORWARDED_HOST = True
+
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
@@ -123,14 +182,6 @@ if not DEBUG:
     CSRF_COOKIE_SECURE = True
 
 # Password reset settings
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For development - prints emails to console
-# For production, use SMTP backend:
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# MAIL_HOST_USER = 'kharroubi.naoufel@gmail.com'
-# EMAIL_HOST_PASSWORD = 'mwkm jnza held xenp'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# Password reset URLs
 PASSWORD_RESET_TIMEOUT = 259200  # 3 days in seconds
